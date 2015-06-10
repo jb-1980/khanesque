@@ -1,0 +1,166 @@
+.course-content ul.topics {margin:0;}
+.course-content ul.topics li.section {list-style: none;margin:0 0 5px 0;padding:0;}
+.course-content ul.topics li.section .content {margin:0 40px;}
+.course-content ul.topics li.section .left {float:left;}
+.course-content ul.topics li.section .right {float:right;}
+.course-content ul.topics li.section .left,
+.course-content ul.topics li.section .right {width:40px;text-align:center;padding: 6px 0;}
+.course-content ul.topics li.section .right img.icon { padding: 0 0 4px 0;}
+.course-content ul.topics li.section .left .section-handle img.icon { padding:0; vertical-align: baseline; }
+
+.khanesque-upnext-outer-container{
+  position:relative;
+  border:0;
+}
+
+.khanesque-upnext-container{
+  background: transparent;
+  border: 1px solid #eee;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  opacity: 1;
+  position: relative;
+  transition: max-height 500ms ease;
+  max-height: 200px;
+  min-height: 60px;
+  cursor:pointer;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.khanesque-sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .khanesque-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:100%;
+    z-index: 1000;
+    display: block;
+    padding: 50px 20px 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right:0px solid #cbcbcb;
+    border-right-width: 1px;
+  }
+}
+
+/* Sidebar navigation */
+.khanesque-nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.khanesque-nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.khanesque-nav-sidebar > .active > a,
+.khanesque-nav-sidebar > .active > a:hover,
+.khanesque-nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+.khanesque-task-link{
+  display:block;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.khanesque-info-container{
+ padding:20px 0;
+}
+
+.khanesque-modal-skillnode{
+  width:100%;
+  cursor:pointer;
+  padding:10px 0;
+  position:relative;
+  top:50%;
+  transform:translateY(-50%);
+  min-height:60px;
+}
+
+.khanesque-modal-skillnode-highlight{
+  background-color:#5c2040;
+  color:#fff;
+}
+
+.khanesque-modal-skilltitle{
+  padding-left:85px;
+  font-size:16px;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.khanesque-skill-glyph{
+  margin-right:5px;
+  margin-left:15px;
+  text-align:center;
+  vertical-align:middle;
+  border-radius:50%;
+  width:50px;
+  height: 50px;
+  float:left;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.khanesque-mod-title{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.khanesque-youadded{
+  color:#58c4dd;
+  
+}
+
+.khanesque-clicktoremove{
+  color:#999;
+  text-decoration:underline;
+}
+
+.khanesquefadein{
+  background-color:#ad7fa8;
+  color:white;
+  transition-property: background-color, color;
+  transition-duration: 0.8s;
+  transition-timing-function: linear;
+}
+
+.khanesquefadeout{
+ background-color:inherit;
+  color:inherit;
+  transition-property: background-color, color;
+  transition-duration: 1s;
+  transition-timing-function: linear;
+}
+
+

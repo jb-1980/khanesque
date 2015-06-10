@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="course/format/khanesque/db" VERSION="20150519" COMMENT="XMLDB file for Moodle course/format/khanesque"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="format_khanesque" COMMENT="table to store hide/show preferences for mods in the khanesque format">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="id of user"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="id of course the mods are in"/>
+        <FIELD NAME="modid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="added" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="boolean to determine if user has added this mod for display"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="courseanduser" UNIQUE="false" FIELDS="courseid, userid" COMMENT="course and user id index"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
