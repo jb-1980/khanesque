@@ -49,57 +49,19 @@ class format_khanesque_renderer extends format_section_renderer_base {
         // we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any other managing capability.
         $page->set_other_editing_capability('moodle/course:setcurrentsection');
     }
-    protected function print_modal($title,$id,$cms,$grades){
-        $out = '<!-- Modal -->
-<div class="modal fade" id="'.$id.'" tabindex="-1" role="dialog" aria-labelledby="'.$id.'-Label" aria-hidden="true">
+    
+    protected function print_modal(){
+        return '<!-- Modal -->
+<div class="modal fade" id="tasks-modal" tabindex="-1" role="dialog" aria-labelledby="tasks-modal-title" aria-hidden="true">
   <div class="modal-dialog" style="width:95%;">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="'.$id.'-Label">'.$title.'</h4>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="khanesque-sidebar col-md-3" style="position:absolute;">
-             '."\n";
-              foreach($cms as $cm){
-                  if(!array_key_exists($cm->modname,$grades)){
-                      $glyphcolor = '#DDD';
-                  } else if(!array_key_exists($cm->instance,$grades[$cm->modname])){
-                      $glyphcolor = '#DDD';
-                  } else{
-                      $glyphcolor = $grades[$cm->modname][$cm->instance]->grades->level;
-                  }
-                  $nodeid = 'khanesque-modal-'.$cm->module.'-'.$cm->instance;
-                  $out.='<div style="min-height:60px;"><div class="khanesque-modal-skillnode" id="'.$nodeid.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">
-                  <div class="khanesque-skill-glyph" style="background-color:'.$glyphcolor.';">';
-                  if(!array_key_exists($cm->modname,$grades)){
-                        $glyph = 'glyphicon glyphicon-file';
-                    } else{
-                        $glyph = 'glyphicon glyphicon-inverse glyphicon-star-empty';
-                    }
-                  $out.='<span class="'.$glyph.'" style="color:white;font-size:40px;line-height:50px;"></span></div>
-                  <div class="khanesque-modal-skilltitle">'.$cm->name.'</div></div>
-                  </div><div class="clearfix"></div>';
-              }
-              $out.='
-            </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-3 main">
-              <div id="khanesque-content-area-'.$id.'" style="min-height:600px"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
+    
     </div>
   </div>
 </div><!-- end Modal -->';
-        return $out;
-        
     }
+    
+    
     public function print_stuff($course,$userid){
         global $DB;
         
@@ -156,20 +118,12 @@ class format_khanesque_renderer extends format_section_renderer_base {
             }
         }
         //print_object($grouped_cms);
-        $out='';
-        foreach ($grouped_cms as $section => $groups){
-            foreach($groups as $indent=>$group){
-                $title = $group[0]->name;
-                $id = 'modal-'.($section+1).'-'.$indent;
-                
-                $out.= $this->print_modal($title,$id,$group,$grades);
-            }
-        }
+        $out= $this->print_modal();
+        
         
         $user_added_mods = $DB->get_records('format_khanesque',array('courseid'=>$course->id,'userid'=>$userid),'modid','modid,added');
         //print_object($user_added_mods);
-        $out.= '
-  <div class="khanesque-upnext-outer-container">'."\n";
+        $out.= '<div class="khanesque-upnext-outer-container">'."\n";
         $added = '';
         $upcoming = '';
         
@@ -195,19 +149,29 @@ class format_khanesque_renderer extends format_section_renderer_base {
                             if($user_added_mods[$mod->id]->added){
                                 
                                 $added.= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'">
-                                            
-                                            
-                                              <div class="khanesque-skill-glyph" style="background-color:'.$glyphcolor.';" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$mod->url.'\',\''.$id.'\',\''.$nodeid.'\')">
+                                              <div class="khanesque-skill-glyph"
+                                                style="background-color:'.$glyphcolor.';"
+                                                data-toggle="modal"
+                                                data-target="#tasks-modal"
+                                                data-cm="'.$course->id.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+                                              >
                                                 <span class="glyphicon glyphicon-inverse glyphicon-star-empty" style="color:white;font-size:40px;line-height:50px;"></span>
                                               </div>
                                               <div style="display:inline-block;padding-left:85px;">
-                                                <div class="khanesque-youadded" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$mod->url.'\',\''.$id.'\',\''.$nodeid.'\')">You added</div>
-                                                <div class="khanesque-mod-title" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$mod->url.'\',\''.$id.'\',\''.$nodeid.'\')">'.$mod->name.'</div>
+                                                <div class="khanesque-youadded"
+                                                  data-toggle="modal"
+                                                  data-target="#tasks-modal"
+                                                  data-cm="'.$course->id.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+                                                >
+                                                  You added
+                                                </div>
+                                                <div class="khanesque-mod-title"
+                                                 data-toggle="modal" 
+                                                 data-target="#tasks-modal"
+                                                 data-cm="'.$course->id.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+                                                >'.$mod->name.'</div>
                                                 <div class="khanesque-clicktoremove">Click to remove</div>
                                               </div>
-                                            
-                                              
-                                            
                                           </div>';
                                 $max ++;
                             }
@@ -215,7 +179,10 @@ class format_khanesque_renderer extends format_section_renderer_base {
                         continue;
                     }
                     //print_object($mod);
-                    $upcoming.= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$mod->url.'\',\''.$id.'\',\''.$nodeid.'\')">'."\n";
+                    $upcoming.= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'"
+                                  data-toggle="modal"
+                                  data-target="#tasks-modal" data-cm="'.$course->id.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+                                 >'."\n";  
                     $upcoming.= '        <div class="khanesque-skill-glyph" style="background-color:'.$glyphcolor.';">';
                     $upcoming.= '          <span class="glyphicon glyphicon-inverse glyphicon-star-empty" style="color:white;font-size:40px;line-height:50px;"></span>'."\n";
                     $upcoming.= "        </div>";

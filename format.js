@@ -46,17 +46,47 @@
         container.remove();
     });
     
-    function khanesqueGrabFrame(url,id,nodeid){
+    function khanesqueGrabFrame(url,nodeid){
         $.ajax({
             url: url,
             success: function(html) {
-                var content = $('<div />').html(html).find("[role='main']");
-                $('#khanesque-content-area-'+id).html(content);
+                var content = $('<div/>').html(html).find("[role='main']");
+                $('#khanesque-content-area').html(content);
+            },
+            error: function(html) {
+                console.log('there was an error with khanesqueGrabFrame');
             }
         });
         $('.khanesque-modal-skillnode').removeClass('khanesque-modal-skillnode-highlight');
         $('#'+nodeid).addClass('khanesque-modal-skillnode-highlight');
     }
+
+$('#tasks-modal').on('show.bs.modal', function (event) {
+  var modal = $(this)
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var cmData = button.data('cm').split('$'); // Extract info from data-* attributes
+  var course = cmData[0];
+  var section = cmData[1];
+  var indent = cmData[2];
+  var mod_url = cmData[3];
+  var nodeid = cmData[4];
+  var mod = cmData[5];
+  var instance = cmData[6];
+  console.log(cmData);
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  $.ajax({
+      url: '/moodle/course/format/khanesque/ajax/modalbody.php?course='+course+'&section='+section+'&indent='+indent+'&modid='+mod+'&instance='+instance,
+      dataType:'html',
+      success: function(content) {
+          modal.find('.modal-content').html(content);
+          khanesqueGrabFrame(mod_url,nodeid)
+      },
+      error: function(content) {
+          console.log('There was an error with modalbody');
+      }
+  });
+})
+
 
 
 // Javascript functions for Topics course format

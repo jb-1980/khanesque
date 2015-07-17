@@ -13,9 +13,11 @@ $moduleid = required_param('modid',PARAM_INT);
 
 // Get mod data
 $mod = $DB->get_record('course_modules',array('module'=>$moduleid,'instance'=>$instanceid));
+
 $cms = get_fast_modinfo($mod->course)->cms;
 $cm = $cms[$mod->id];
-$id = 'modal-'.$mod->section.'-'.$mod->indent;
+$section = $mod->section;
+$indent = $mod->indent;
 $nodeid = 'khanesque-modal-'.$mod->module.'-'.$mod->instance;
 
 $grade_item = grade_item::fetch(array('itemmodule'=>$cm->modname,'iteminstance'=>$instanceid));
@@ -45,22 +47,47 @@ if($level == null){
 }
 //print_object($cm->course);
 // Create mod container
-$added= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'">
-                                            
-                                            
-              <div class="khanesque-skill-glyph" style="background-color:'.$glyphcolor.';" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">
-                <span class="glyphicon glyphicon-inverse glyphicon-star-empty" style="color:white;font-size:40px;line-height:50px;"></span>
-              </div>
-              <div style="display:inline-block;padding-left:85px;">
-                <div class="khanesque-youadded" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">You added</div>
-                <div class="khanesque-mod-title" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">'.$cm->name.'</div>
-                <div class="khanesque-clicktoremove">Click to remove</div>
-              </div>
-            
-              
-            
-          </div>';
+#$added= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'">
+#                                            
+#                                            
+#              <div class="khanesque-skill-glyph" style="background-color:'.$glyphcolor.';" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">
+#                <span class="glyphicon glyphicon-inverse glyphicon-star-empty" style="color:white;font-size:40px;line-height:50px;"></span>
+#              </div>
+#              <div style="display:inline-block;padding-left:85px;">
+#                <div class="khanesque-youadded" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">You added</div>
+#                <div class="khanesque-mod-title" data-toggle="modal" data-target="#'.$id.'" onClick="khanesqueGrabFrame(\''.$cm->url.'\',\''.$id.'\',\''.$nodeid.'\')">'.$cm->name.'</div>
+#                <div class="khanesque-clicktoremove">Click to remove</div>
+#              </div>
+#            
+#              
+#            
+#          </div>';
 
+$added= '<div class="khanesque-upnext-container" id="khanesque-'.$mod->module.'-'.$mod->instance.'">
+  <div class="khanesque-skill-glyph"
+    style="background-color:'.$glyphcolor.';"
+    data-toggle="modal"
+    data-target="#tasks-modal"
+    data-cm="'.$mod->course.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+  >
+    <span class="glyphicon glyphicon-inverse glyphicon-star-empty" style="color:white;font-size:40px;line-height:50px;"></span>
+  </div>
+  <div style="display:inline-block;padding-left:85px;">
+    <div class="khanesque-youadded"
+      data-toggle="modal"
+      data-target="#tasks-modal"
+      data-cm="'.$mod->course.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+    >
+      You added
+    </div>
+    <div class="khanesque-mod-title"
+     data-toggle="modal" 
+     data-target="#tasks-modal"
+     data-cm="'.$mod->course.'$'.$section.'$'.$indent.'$'.$mod->url.'$'.$nodeid.'$'.$mod->module.'$'.$mod->instance.'"
+    >'.$cm->name.'</div>
+    <div class="khanesque-clicktoremove">Click to remove</div>
+  </div>
+</div>';
 
 // Send back mod html
 echo $added;
